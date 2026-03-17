@@ -20,6 +20,8 @@
     "express-session": "^1.19.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0" ,
+    "start" : "node server.js" ,
+    "setup" : "node config/setup.js"
   }
 }
