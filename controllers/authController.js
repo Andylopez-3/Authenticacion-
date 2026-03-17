@@ -93,7 +93,7 @@ async function login(req , res) {
                 JWT_SECRET,
                 { expiresIn: '1h'}
             );   
-            return res.render('dashboard', { user, token, usejwt: true});
+            return res.render('dashboard', { user, token, useJwt: true});
         } else {
             //guardar datos en sesión
             req.session.userId = user.id;
