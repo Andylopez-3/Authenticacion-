@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - PassPort Inc.</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🛂 Panel de Administrador</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Intentos fallidos</th>
+                    <th>Bloqueado hasta</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td><%= user.id %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.role %></td>
+                        <td><%= user.failedLoginAttempts %></td>
+                        <td><%= user.locked_until ? new Date(user.locked_until).toLocalString() : 'No bloqueado' %></td>
+                        <td>
+                            <form method="POST" action="/admin/delete/<%= user.id %>">
+                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                <button type="submit" onclick="return confirm('¿Eliminar usuario?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <a href="/dashboard">← Volver al dashboard</a>
+    </div>
+</body>
+</html>
