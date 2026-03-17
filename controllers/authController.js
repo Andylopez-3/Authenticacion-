@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userModel = require('../models/usermodel');
+const userModel = require('../models/userModel');
 
 const JWT_SECRET = process.env.JWT_SECRET ||  'hello word' ;
 const SALT_ROUNDS = 10;
@@ -59,7 +59,7 @@ async function login(req , res) {
         if (user.locked_until && new Date() < user.locked_until) {
             const minutes =Math.ceil((new Date(user.locked_until) - new Date()) / 60000);
             return res.render('login' , {
-                error : 'Cuenta bloqueada. Intenta en ${minutes} minuto(s)',
+                error : `Cuenta bloqueada. Intenta en ${minutes} minuto(s)`,
                 csrfToken : req.csrfToken()
             });
             }
@@ -98,7 +98,7 @@ async function login(req , res) {
             //guardar datos en sesión
             req.session.userId = user.id;
             req.session.role = user.role;
-            req.session
+            req.session.email = user.email;
             return res.redirect('/dashboard');
         }
     } catch (err) {
@@ -119,7 +119,13 @@ function logout(req, res) {
 async function dashboard(req, res) {
     const userId = req.session?.userId || req.user?.id;
     const user = await userModel.findById(userId);
-    res.render('dashboard', { user, csrfToken: req.csrfToken() });
+    res.render('dashboard', { user, token: null, useJwt: false });
+}
+
+//get /admin para mostrar panel de admin (solo admin)
+async function adminPanel(req, res) {
+    const users = await userModel.getAllUsers();
+    res.render('admin', { users, csrfToken: req.csrfToken() });
 }
 
 //POST /admin/delete/:id para eliminar usuario (solo admin)
@@ -136,5 +142,6 @@ module.exports = {
     login,
     logout,
     dashboard,
+    adminPanel,
     deleteUser
 };

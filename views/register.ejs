@@ -10,9 +10,9 @@
         <h1>🛂 PassPort Inc.</h1>
         <h2>Crear cuenta</h2>
 
-        <% if (error) {
+        <% if (error) { %>
             <p class="error"><%= error %></p>
-        } %>
+        <% } %>
 
         <form method="POST" action="/register">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">

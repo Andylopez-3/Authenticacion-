@@ -1,4 +1,4 @@
-const userModel = require('../controllers/usermodel');
+const userModel = require('../models/userModel');
 
 //solo permite pasar si el usuario es admin
 function requireAdmin(req, res, next) {
