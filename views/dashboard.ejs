@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - PassPort Inc.</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🛂 PassPort Inc.</h1>
+        <h2>Bienvenido, <%= user.email %>!</h2>
+        <p>Rol: <strong><%= user.role %></strong></p>
+
+        <% if (useJwt && token) { %>
+            <div class='token-box">
+                <p><strong>Tu token JWT:</strong></p>
+                <code id="token"><%= token %></code>
+                <br>
+                <button onclick="copyToken()">Copiar token</button>
+                </div>'
+        <% } %>
+
+        <% if (user.role === 'admin') { %>
+            <a href="/admin" class="btn-admin">Panel de administración</a>
+        <% } %>
+
+        <form method="POST" action="/logout">
+            <input type="hidden" name="_csrf" value="">
+            <button type="submit" class="btn-logout">Cerrar sesión</button>
+        </form>
+    </div>
+
+    <script>
+        function copyToken() {
+            const token = document.getElementById('token').innerText;
+            navigator.clipboard.writeText(token)
+            alert('Token copiado');
+        }
+
+        // obtener CSRF token del servidor para el formulario de logout
+        // como usuamos JWT no hay sesion
+    <script>
+</body>
+</html>
+    
