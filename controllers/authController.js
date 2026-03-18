@@ -93,6 +93,10 @@ async function login(req , res) {
                 JWT_SECRET,
                 { expiresIn: '1h'}
             );   
+            // Guardamos también en sesión para que funcione la navegación
+            req.session.userId = user.id;
+            req.session.role = user.role;
+            req.session.email = user.email;
             return res.render('dashboard', { user, token, useJwt: true , csrfToken: req.csrfToken() });
         } else {
             //guardar datos en sesión
