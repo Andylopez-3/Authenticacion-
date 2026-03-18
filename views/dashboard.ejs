@@ -12,12 +12,12 @@
         <p>Rol: <strong><%= user.role %></strong></p>
 
         <% if (useJwt && token) { %>
-            <div class='token-box">
+            <div class="token-box">
                 <p><strong>Tu token JWT:</strong></p>
                 <code id="token"><%= token %></code>
                 <br>
                 <button onclick="copyToken()">Copiar token</button>
-                </div>'
+                </div>
         <% } %>
 
         <% if (user.role === 'admin') { %>
@@ -25,7 +25,7 @@
         <% } %>
 
         <form method="POST" action="/logout">
-            <input type="hidden" name="_csrf" value="">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button type="submit" class="btn-logout">Cerrar sesión</button>
         </form>
     </div>
@@ -39,7 +39,7 @@
 
         // obtener CSRF token del servidor para el formulario de logout
         // como usuamos JWT no hay sesion
-    <script>
+    </script>
 </body>
 </html>
     

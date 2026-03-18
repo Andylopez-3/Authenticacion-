@@ -46,7 +46,7 @@ async function showLogin(req, res) {
 //Endpoint POST para login de usuario
 async function login(req , res) {
     try {
-        const { email, password , usejwt } = req.body;
+        const { email, password , useJwt } = req.body;
 
         const user = await userModel.findByEmail(email);
 
@@ -86,14 +86,14 @@ async function login(req , res) {
         await userModel.resetFailedAttempts(email);
 
         // El usuario eligio JWT o cookies de sesión
-        if (usejwt === 'true') {
+        if (useJwt === 'true') {
             //generar jwt
             const token = jwt.sign(
                 { id: user.id, email: user.email , role: user.role},
                 JWT_SECRET,
                 { expiresIn: '1h'}
             );   
-            return res.render('dashboard', { user, token, useJwt: true});
+            return res.render('dashboard', { user, token, useJwt: true , csrfToken: req.csrfToken() });
         } else {
             //guardar datos en sesión
             req.session.userId = user.id;
@@ -119,7 +119,7 @@ function logout(req, res) {
 async function dashboard(req, res) {
     const userId = req.session?.userId || req.user?.id;
     const user = await userModel.findById(userId);
-    res.render('dashboard', { user, token: null, useJwt: false });
+    res.render('dashboard', { user, token: null, useJwt: false , csrfToken: req.csrfToken() });
 }
 
 //get /admin para mostrar panel de admin (solo admin)
