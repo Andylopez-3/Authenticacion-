@@ -19,4 +19,4 @@ router.get('/dashboard', requireAuth, authController.dashboard);
 router.get('/admin', requireAuth, requireAdmin, authController.adminPanel);
 router.post('/admin/delete/:id', requireAuth, requireAdmin, authController.deleteUser);
 
-module.exports = router;
+module.exports = router;  //exportamos el router para usarlo en server.js

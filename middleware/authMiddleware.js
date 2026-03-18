@@ -25,4 +25,4 @@ function requireAuth(req, res, next) {
     res.redirect('/login');
 }
 
-module.exports = { requireAuth };
+module.exports = { requireAuth }; // exportamos la función para usarla en las rutas protegidas

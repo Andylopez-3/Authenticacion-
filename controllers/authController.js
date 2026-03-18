@@ -139,7 +139,7 @@ async function deleteUser(req, res) {
     
 }
 
-module.exports = {
+module.exports = {  //exportamos las funciones para usarlas en las rutas
     showRegister,
     register,
     showLogin ,
