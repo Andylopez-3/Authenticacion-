@@ -27,7 +27,7 @@
                         <td><%= user.email %></td>
                         <td><%= user.role %></td>
                         <td><%= user.failedLoginAttempts %></td>
-                        <td><%= user.locked_until ? new Date(user.locked_until).toLocalString() : 'No bloqueado' %></td>
+                        <td><%= user.locked_until ? new Date(user.locked_until).toLocaleString() : 'No bloqueado' %></td>
                         <td>
                             <form method="POST" action="/admin/delete/<%= user.id %>">
                                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">

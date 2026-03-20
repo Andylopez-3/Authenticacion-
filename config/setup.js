@@ -1,16 +1,16 @@
 const {Client} = require('pg');
 
 async function setup() {
-  const client = new Client({
+    const client = new Client({
     user: 'postgres',
     host: 'localhost',
     database: 'postgres',
     password: '123',
     port: 5432,
-  });     
+    });     
 
-  await client.connect();
-  await client.query('CREATE DATABASE passport_inc').catch(()  => {
+    await client.connect();
+    await client.query('CREATE DATABASE passport_inc').catch(()  => {
     console.log('La base de datos ya existe  ');
     });
     await client.end();
