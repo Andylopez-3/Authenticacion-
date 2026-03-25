@@ -5,6 +5,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const csrf = require('csurf');
 const path = require('path');
+require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
 

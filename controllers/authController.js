@@ -34,7 +34,7 @@ async function register(req, res) {
             return res.render('register', { error: 'El email ya está registrado', csrfToken: req.csrfToken() });
         }
         console.error(err);
-        res.render('resgister', { error: 'Error al resgistrarse', csrfToken: req.csrfToken() });
+        res.render('register', { error: 'Error al resgistrarse', csrfToken: req.csrfToken() });
     }
 }
 
