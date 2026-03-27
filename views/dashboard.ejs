@@ -36,6 +36,25 @@
             navigator.clipboard.writeText(token)
             alert('Token copiado');
         }
+        // si tiene jwt, intercepta todos los links para mandar el token en el header
+        const token = localStorage.getItem('jwt_token');
+        if (token) {
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    fetch(this.href, {
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        }
+                    }).then(res => res.text())
+                        .then(html => {
+                            document.open();
+                            document.write(html);
+                            document.close();
+                        });
+                });
+            });
+        }
 
     </script>
 </body>
