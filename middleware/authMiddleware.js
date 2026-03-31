@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = process.env.JWT_SECRET ||  'hello word' ;
+const JWT_SECRET = process.env.JWT_SECRET  ;
 
 //verifica si el usuario esta logueado (soporta sesiones y jwt)
 function requireAuth(req, res, next) {

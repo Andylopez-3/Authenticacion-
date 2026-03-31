@@ -1,4 +1,5 @@
 const {Client} = require('pg');
+require('dotenv').config();
 
 async function setup() {
     const client = new Client({

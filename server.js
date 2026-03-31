@@ -6,8 +6,10 @@ const helmet = require('helmet');
 const csrf = require('csurf');
 const path = require('path');
 require('dotenv').config();
+const pgSession = require('connect-pg-simple')(session);
 
 const authRoutes = require('./routes/authRoutes');
+const pool = require('./config/database');
 
 const app = express();
 
@@ -28,18 +30,25 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Configuración de sesiones
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'hello word' ,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        httpOnly: true,
-        secure: false, // Cambiar a true si usas HTTPS
+    store : new pgSession({
+        pool : pool,                // Conexión a la base de datos
+        tableName : 'sessions' // Nombre de la tabla para almacenar sesiones
+    }),
+    secret: process.env.SESSION_SECRET  , // token de sesión seguro
+    resave: false,   // No guardar la sesión si no ha cambiado
+    saveUninitialized: false, // No guardar sesiones vacías , sin iniciar sesión
+    cookie: { 
+        httpOnly: true,  // Evita que el cookie sea accesible desde JavaScript
+        secure: false, // Cambiar a true si usas HTTPS , false por que estamos en desarrollo ,localhost
         maxAge: 1000 * 60 * 60 // 1 hora
     }
 }));
 
 // Protección CSRF
-app.use(csrf({ cookie: false }));
+app.use((req, res, next) => {
+    if (req.path === '/logout') return next(); // Excluir logout de la protección CSRF
+    csrf({ cookie: false })(req, res, next);
+});
 
 // Limitador de tasa para prevenir ataques de fuerza bruta
 const loginLimiter = rateLimit({

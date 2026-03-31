@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
-const JWT_SECRET = process.env.JWT_SECRET ||  'hello word' ;
+const JWT_SECRET = process.env.JWT_SECRET ;
 const SALT_ROUNDS = 10;
 const MAX_FAILED_ATTEMPTS = 5;
 
@@ -93,10 +93,6 @@ async function login(req , res) {
                 JWT_SECRET,
                 { expiresIn: '1h'}
             );   
-            // Guardamos también en sesión para que funcione la navegación
-            req.session.userId = user.id;
-            req.session.role = user.role;
-            req.session.email = user.email;
             return res.render('dashboard', { user, token, useJwt: true , csrfToken: req.csrfToken() });
         } else {
             //guardar datos en sesión
@@ -113,9 +109,22 @@ async function login(req , res) {
 
 // post / logout para cerrar sesión
 function logout(req, res) {
-    req.session.destroy(() => {
-        res.clearCookie('connect.sid');
-        res.redirect('/login');     
+    req.session.userId = null;
+    req.session.role = null;
+    req.session.email = null;
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Error al cerrar sesión:', err);
+        }
+        res.clearCookie('connect.sid' , { path: '/' });
+        // Borramos tambien el jwt del localstorage
+        res.send(`
+            <script>
+                localStorage.removeItem('jwt_token');
+                window.location.href = '/login';
+            </script>
+        `);
+        
     });
 }
 
