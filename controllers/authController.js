@@ -92,7 +92,12 @@ async function login(req , res) {
                 { id: user.id, email: user.email , role: user.role},
                 JWT_SECRET,
                 { expiresIn: '1h'}
-            );   
+            );  
+            // Guardamos  el token en una cookie temporal
+            res.cookie('jwt_token' , token, {
+                httpOnly : false, // Permitimos acceso desde JavaScript para que el frontend pueda usarlo
+                maxAge: 1000 * 60 * 60 // 1 hora
+            }) 
             return res.render('dashboard', { user, token, useJwt: true , csrfToken: req.csrfToken() });
         } else {
             //guardar datos en sesión
@@ -117,6 +122,7 @@ function logout(req, res) {
             console.error('Error al cerrar sesión:', err);
         }
         res.clearCookie('connect.sid' , { path: '/' });
+        res.clearCookie('jwt_token' , { path: '/' });
         // Borramos tambien el jwt del localstorage
         res.send(`
             <script>

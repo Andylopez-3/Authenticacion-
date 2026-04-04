@@ -14,7 +14,15 @@ const pool = require('./config/database');
 const app = express();
 
 // Configuración de seguridad
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+            "script-src": ["'self'", "'unsafe-inline'"], // Permitir scripts del mismo origen y scripts en línea
+    }
+}
+
+}));
 
 // parsear body y cookies
 app.use(express.urlencoded({ extended: false }));
@@ -62,6 +70,14 @@ app.use('/login', loginLimiter);
 app.use('/', authRoutes);
 
 app.get('/', (req, res) => res.redirect('/login'));
+
+app.use((err, req, res, next) => {
+    if (err.code === 'EBADCSRFTOKEN') {
+        return res.redirect('/login');
+    }
+    next(err);
+});
+
 
 // Iniciar el servidor
 const PORT = 3000;
