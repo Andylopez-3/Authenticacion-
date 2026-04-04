@@ -1,12 +1,12 @@
-const express = require('express');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const csrf = require('csurf');
-const path = require('path');
-require('dotenv').config();
-const pgSession = require('connect-pg-simple')(session);
+const express = require('express');  // Framework web
+const session = require('express-session');  // Middleware para manejar sesiones
+const cookieParser = require('cookie-parser');  // Middleware para parsear cookies
+const rateLimit = require('express-rate-limit'); // Middleware para limitar la tasa de solicitudes
+const helmet = require('helmet');  // Middleware para configurar cabeceras de seguridad
+const csrf = require('csurf');  // Middleware para protección contra CSRF
+const path = require('path');  // Módulo para manejar rutas de archivos
+require('dotenv').config();  // Cargar variables de entorno
+const pgSession = require('connect-pg-simple')(session); // Almacenamiento de sesiones en PostgreSQL
 
 const authRoutes = require('./routes/authRoutes');
 const pool = require('./config/database');
@@ -71,8 +71,8 @@ app.use('/', authRoutes);
 
 app.get('/', (req, res) => res.redirect('/login'));
 
-app.use((err, req, res, next) => {
-    if (err.code === 'EBADCSRFTOKEN') {
+app.use((err, req, res, next) => {  // Manejo de errores CSRF
+    if (err.code === 'EBADCSRFTOKEN') {  // CSRF token inválido
         return res.redirect('/login');
     }
     next(err);
