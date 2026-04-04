@@ -143,11 +143,11 @@ roleMiddleware.js — verifica si el usuario tiene el rol requerido
 🎓 Conceptos aplicados
 Hashing con bcrypt y salt rounds
 Sesiones persistentes con cookies HttpOnly
-JWT para autenticación sin estado
+JWT para autenticación sin estados
 RBAC (Role Based Access Control)
 CSRF protection con tokens únicos
 XSS protection con Helmet
-Brute force prevention con rate limiting y bloqueo de cuenta
+Brute force prevention con rate limiting y bloqueo de cuenta por ip 
 Variables de entorno para datos sensibles
 Async/Await para operaciones asíncronas
 Prepared Statements para prevenir SQL Injection
