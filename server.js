@@ -15,8 +15,8 @@ const app = express();
 
 // Configuración de seguridad
 app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
+    contentSecurityPolicy: {  
+        directives: {  
             ...helmet.contentSecurityPolicy.getDefaultDirectives(),
             "script-src": ["'self'", "'unsafe-inline'"], // Permitir scripts del mismo origen y scripts en línea
     }
